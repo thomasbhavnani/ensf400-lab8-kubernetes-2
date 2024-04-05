@@ -1,0 +1,54 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx-dep
+# spec:
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx:v1.14.2
+#         imagePullPolicy: Always
+#         ports:
+#         - containerPort: 80
+#         volumeMounts:
+#         - name: nginx-config-volume
+#           mountPath: /etc/nginx/nginx.cfg
+#         volumes:
+#         - name: nginx-config-volume
+
+      
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dep
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.cfg
+      volumes:
+        - name: nginx-config-volume
+          configMap: 
+            name: nginx-configmap
